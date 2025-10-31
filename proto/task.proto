@@ -1,0 +1,90 @@
+// Protocol Buffer definition for Task Management Service
+// This file defines the gRPC service and message types
+
+
+syntax = "proto3";
+package task;
+option go_package = "github.com/King-kin5/task/proto";
+// TaskService defines all the RPC methods for task management
+// This is the gRPC API that clients will call
+service TaskService {
+    // Command: Create a new task (Write operation)
+  rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse);
+  
+  // Command: Update task status (Write operation)
+  rpc UpdateTaskStatus(UpdateTaskStatusRequest) returns (UpdateTaskStatusResponse);
+  
+  // Query: Get all tasks (Read operation)
+  rpc GetTasks(GetTasksRequest) returns (GetTasksResponse);
+  
+  // Query: Get task statistics (Read operation)
+  rpc GetStatistics(GetStatisticsRequest) returns (GetStatisticsResponse);
+}
+
+// Task status enum
+// Defines all possible states a task can be in
+
+enum TaskStatus{
+    PENDING = 0;      // Task is waiting to be started
+  IN_PROGRESS = 1;  // Task is currently being worked on
+  COMPLETED = 2;    // Task is finished
+  CANCELLED = 3;    // Task was cancelled
+}
+// Task message represents a task entity
+message Task {
+  string id = 1;              // Unique identifier (UUID)
+  string title = 2;           // Task title
+  string description = 3;     // Task description
+  TaskStatus status = 4;      // Current status
+  string created_at = 5;      // ISO 8601 timestamp
+  string updated_at = 6;      // ISO 8601 timestamp
+}
+// CreateTaskRequest - Request to create a new task
+message CreateTaskRequest {
+  string title = 1;           // Required: Task title
+  string description = 2;     // Optional: Task description
+}
+// CreateTaskResponse - Response after creating a task
+message CreateTaskResponse {
+  Task task = 1;              // The newly created task
+  string message = 2;         // Success message
+}
+// UpdateTaskStatusRequest - Request to update task status
+message UpdateTaskStatusRequest {
+  string id = 1;              // Required: Task ID to update
+  TaskStatus status = 2;      // Required: New status
+}
+
+// UpdateTaskStatusResponse - Response after updating status
+message UpdateTaskStatusResponse {
+  Task task = 1;              // The updated task
+  string message = 2;         // Success message
+}
+
+// GetTasksRequest - Request to retrieve tasks
+// Empty for now, but can add filters later (status, pagination, etc.)
+message GetTasksRequest {
+  // Can add optional filters:
+  // TaskStatus filter_status = 1;
+  // int32 page = 2;
+  // int32 page_size = 3;
+}
+
+// GetTasksResponse - Response with list of tasks
+message GetTasksResponse {
+  repeated Task tasks = 1;    // List of all tasks
+  int32 total = 2;            // Total count
+}
+
+// GetStatisticsRequest - Request for task statistics
+// Empty for now
+message GetStatisticsRequest {}
+
+// GetStatisticsResponse - Response with statistics
+message GetStatisticsResponse {
+  int32 total_tasks = 1;      // Total number of tasks
+  int32 pending_tasks = 2;    // Number of pending tasks
+  int32 in_progress_tasks = 3;// Number of in-progress tasks
+  int32 completed_tasks = 4;  // Number of completed tasks
+  int32 cancelled_tasks = 5;  // Number of cancelled tasks
+}
