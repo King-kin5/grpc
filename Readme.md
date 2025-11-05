@@ -45,8 +45,8 @@ task-manager/
 │   └── config/
 │       └── config.go             # Configuration management
 ├── migrations/
-│   ├── 001_create_tasks_write.sql
-│   └── 002_create_tasks_read.sql
+│   ├── 001_create_tasks_write.sql # Write database schema
+│   └── 002_create_tasks_read.sql  # Read database schema
 ├── docker-compose.yml            # PostgreSQL + RabbitMQ setup
 ├── go.mod
 ├── go.sum
@@ -224,25 +224,3 @@ GetTasks Query:
 Client → gRPC → QueryHandler → ReadDB → Response
 ```
 
-## 🚧 Next Steps
-
-- Add authentication & authorization
-- Implement event sourcing
-- Add Redis caching layer
-- Create REST gateway with grpc-gateway
-- Add observability (Prometheus, Jaeger)
-- Write unit & integration tests
-
-## 📚 Resources
-
-- [gRPC Go Tutorial](https://grpc.io/docs/languages/go/quickstart/)
-- [CQRS Pattern](https://martinfowler.com/bliki/CQRS.html)
-- [RabbitMQ Go Client](https://www.rabbitmq.com/tutorials/tutorial-one-go.html)
-
-## 📄 License
-
-MIT License - Feel free to use for learning!
-
----
-
-**Built with ❤️ for learning gRPC, CQRS, and Message Queues**
